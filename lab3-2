@@ -1,0 +1,180 @@
+#include <stdio.h>
+int main()
+{
+    int m, d, x;
+    scanf("%d/%d", &m, &d);
+    x = d;
+    
+    switch(m){
+        case 1:
+            x = d;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 2:
+            x+=31;
+            if (d>28){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 3:
+            x+=31+28;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;            
+        case 4:
+            x+=31+28+31;
+            if (d>30){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 5:
+            x+=31+28+31+30;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 6:
+            x+=31+28+31+30+31;
+            if (d>30){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 7:
+            x+=31+28+31+30+31+30;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 8:
+            x+=31+28+31+30+31+30+31;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 9:
+            x+=31+28+31+30+31+30+31+30;
+            if (d>30){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 10:
+            x+=31+28+31+30+31+30+31+30+31;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 11:
+            x+=31+28+31+30+31+30+31+30+31+30;
+            if (d>30){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+        case 12:
+            x+=31+28+31+30+31+30+31+30+31+30+31;
+            if (d>31){
+              printf("Input Error\n");
+            }
+            else{
+              if (x == 1){
+                printf("There is %d day\n",x);
+                }
+              else{
+                printf("There are %d days\n",x);
+              }
+            }
+            break;
+    }
+
+    return 0;
+}
