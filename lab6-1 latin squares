@@ -1,1 +1,71 @@
 
+#include <stdio.h>
+
+int matrix[30][30];
+
+int check_col(int i, int len){
+  int column[30] = {0};
+  for (int j=0; j<len; j++){
+    column[matrix[j][i]]++;
+  }
+
+  for (int j=1; j<=len; j++){
+    if (column[j] != 1) {
+      return 1;
+    } 
+  }
+  return 0;  
+}
+
+int check_row(int i, int len){
+  int row[30] = {0};
+  for (int j=0; j<len; j++){
+    row[matrix[i][j]]++;
+  }
+  for (int j=1; j<=len; j++){
+    if (row[j] != 1) {
+      return 1;
+    } 
+  }
+  return 0;  
+}
+
+int main(){
+  int size;
+  int invalid = 0;
+  
+  scanf("%d",&size);
+  for (int i=0; i<size ; i++){
+    for (int j=0; j<size ; j++){
+      scanf("%d", &matrix[i][j]);
+    }
+  }
+  
+  for (int i=0 ; i<size ; i++){
+    if (check_row(i,size)==1) {
+      invalid = 1; 
+    }
+    else{
+      invalid = 0;
+    }
+  }
+  
+  for (int i=0; i<size; i++){
+    if (check_col(i,size)==1){
+      invalid = 1;
+    }
+    else{
+      invalid = 0;
+    }
+  }
+  
+  if(invalid == 1){
+    printf("no\n");
+  } 
+  else{
+    printf("yes\n");
+  }
+
+  return 0;
+
+}
