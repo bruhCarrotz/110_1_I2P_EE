@@ -1,1 +1,105 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct stack {
+    int *head;
+    int top;
+    int max_size;
+} stack_arr_t;
+
+int n_free =0;
+
+void stack_init(stack_arr_t *s, int size) {
+  s->head = (int*) malloc(size * sizeof(int));
+  s->max_size = size;
+}
+
+void stack_destroy(stack_arr_t *s) {
+  free(s->head);
+}
+
+void dynamic_push(int elem, stack_arr_t *s) {
+  if (n_free == s->max_size-1){
+    int *pt;
+    pt= (int*) malloc(s->max_size * sizeof(int));
+    for(int i=0; i<(n_free) ; i++){
+      pt[i] = s->head[i];
+    }
+    s->max_size *= 2;
+    s->head = (int*) malloc(s->max_size * sizeof(int));
+    for(int i=0; i<(n_free) ; i++){
+      s->head[i]=pt[i];
+    }
+    free(pt);
+  }
+
+  s->head[n_free] = elem;
+  n_free += 1;
+  s->top = (n_free)-1;
+}
+
+int dynamic_pop(stack_arr_t *s) {
+  int *pt;
+
+  if(s->top < s->max_size/4) {
+    pt= (int*) malloc(s->max_size * sizeof(int));
+    for(int i=0; i<(s->max_size) ; i++){
+      pt[i] = s->head[i];
+    }
+    s->max_size /= 2;
+    s->head = (int*) malloc(s->max_size * sizeof(int));
+    for(int i=0; i<s->max_size ;i++){
+      s->head[i] = pt[i];
+    }
+    free(pt);
+  }
+  return s->head[s->top--];
+}
+
+void show_stack(stack_arr_t *s) {
+  printf("Stack contains %d element(s)\n", s->top+1);
+  for (int i=0 ; i < (s->top)+1 ; i++){
+    if (i != (s->top)){
+      printf("%d ",s->head[i]);
+    } 
+    else {
+      printf("%d\n",s->head[i]);
+    }
+  }
+  printf("top = %d, max_size = %d", s->top+1, s->max_size);
+
+}
+
+int main(){
+    stack_arr_t my_stack;
+    
+    int input_size, temp, max_size, pop_size;
+
+    /* input stack's max size */
+    scanf("%d", &max_size);
+    stack_init(&my_stack, max_size);
+
+    /* input elements to be pushed */
+    scanf("\n%d", &input_size);
+    int i;
+    for(i=0; i<input_size; ++i){
+        scanf("\n%d", &temp);
+        dynamic_push(temp, &my_stack);
+    }
+
+    /* input number of elements to be popped */
+    scanf("\n%d", &pop_size);
+    for(i=0; i < pop_size-1; ++i){
+        printf("%d ", dynamic_pop(&my_stack));
+    }
+    if (0 != pop_size){
+        printf("%d\n", dynamic_pop(&my_stack));
+    }
+
+    show_stack(&my_stack);
+
+    stack_destroy(&my_stack);
+
+    return 0;
+}
