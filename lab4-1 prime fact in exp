@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void primeFactors(int num)
+{
+    int fac = 2;
+    if(num == 1){
+      printf("%d^%d", num, num);
+    }
+    while (num > 1)
+    {
+        if (num % fac == 0)
+        {
+            printf("%d^", fac);
+            num /= fac;
+            int pow = 1;
+            while (num % fac == 0)
+            {
+                num /= fac;
+                pow++;
+            }
+            printf("%d", pow);
+
+            if (num != 1)
+              printf("*");
+        }
+        else
+        {
+            fac++;
+        }
+    }
+    printf("\n");
+}
+int main(){
+  int n;
+  scanf("%d", &n);
+  primeFactors(n);
+  return 0;
+}
