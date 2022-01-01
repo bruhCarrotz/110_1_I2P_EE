@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<math.h>
+
+void primeFactors(int x) {
+   if (x == 1){
+    printf("%d", x);
+   }
+   while(x%2 == 0) {
+      printf("%d*", 2);
+      x = x/2;
+   }
+   for(int i = 2 ; i <= x ; i++){
+      while(x%i == 0) {
+         printf("%d", i);
+         x = x/i;
+         if (x!=1){
+            printf("*");
+         }
+      }
+   }
+   printf("\n");
+}
+int main() {
+   int n;
+   scanf("%d", &n);
+   primeFactors(n);
+}
