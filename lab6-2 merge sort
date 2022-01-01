@@ -1,1 +1,71 @@
 
+#include <stdio.h>
+
+void merge(int [], int, int);
+void input(int [], int*, int*);
+void output(int [], int);
+
+
+int main(){
+  int a[40],  size1, size2;
+
+  input(a, &size1, &size2);
+  merge(a,size1,size2);
+  output(a, size1+size2);
+  
+  return 0;
+}
+  
+void merge(int a[], int size1, int size2){
+  int size3= size1+size2;
+  int c[size3];
+  int temp;
+
+  for(int i=0; i<size1; i++){
+    c[i] = a[size1];
+  }
+  for(int i=0, j=size1 ; i<size2 && j<size3 ; i++, j++){
+    c[j] = a[size2];
+  }  
+}
+
+void input(int a[], int *p_sz1, int *p_sz2){
+
+  scanf("%d", p_sz1);
+  for(int i=0 ; i<*p_sz1 ; i++) {
+    scanf("%d",&a[i]);
+  }
+
+  scanf("%d",p_sz2);
+  for(int i=*p_sz1 ; i<*p_sz1+*p_sz2 ; i++) {
+    scanf("%d",&a[i]);
+  }
+}
+
+void output(int a[], int size){
+    printf("%d\n", size);
+    int temp;
+    for(int x=0; x<size;++x)
+    {
+        for(int y=x+1 ; y<size ; ++y){
+            if (a[x] > a[y])
+            {
+                temp = a[x];
+                a[x] = a[y];
+                a[y] = temp;
+            }            
+        }
+    }
+    for (int i=0; i<size; i++)
+    {
+       if(i<size-1)
+       {
+          printf("%d ",a[i]);
+       }
+      else 
+      {
+        printf("%d",a[i]);
+      }
+    }
+    
+}
