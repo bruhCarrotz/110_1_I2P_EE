@@ -1,1 +1,86 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct stack {
+    int *head;
+    int top;
+    int max_size;
+
+}stack_arr_t;
+
+void stack_init(stack_arr_t *s, int size) {
+  struct stack *pt = (struct stack*)malloc(sizeof(struct stack));
+  s->max_size = size;
+  s->top = -1;
+  s->head = (int*)malloc(sizeof(int) * size );
+}
+
+void stack_destroy(struct stack* s) {
+  free(s->head);
+}
+
+void push(int elem, struct stack *s) {
+  if(s->top == s->max_size-1) {
+    printf("Pushing full stack!\n");
+    exit(1);
+  }
+  else {
+    s->head[++s->top] = elem;
+  }
+}
+
+int pop(struct stack *s) {
+  if(s->top == -1) {
+    printf("\n");
+    printf("Popping empty stack!\n");
+    exit(1);
+  }
+  return s->head[s->top--];
+}
+
+void show_stack(stack_arr_t *s) {
+  printf("Stack contains %d element(s)\n", (s->top+1));
+  for (int i=0 ; i<(s->top)+1 ;i++){
+    if (i != ((s->top))){
+      printf("%d ",s->head[i]);
+    } else {
+      printf("%d\n",s->head[i]);
+    }
+  }
+  printf("top = %d, max_size = %d", (s->top)+1, s->max_size);
+
+}
+
+int main(){
+    stack_arr_t my_stack;
+    
+    int input_size, temp, max_size, pop_size;
+
+    /* input stack's max size */
+    scanf("%d", &max_size);
+    stack_init(&my_stack, max_size);
+
+    /* input elements to be pushed */
+    scanf("\n%d", &input_size);
+    int i;
+    for(i=0; i<input_size; ++i){
+        scanf("\n%d", &temp);
+        push(temp, &my_stack);
+    }
+
+    /* input number of elements to be popped */
+    scanf("\n%d", &pop_size);
+    for(i=0; i < pop_size-1; ++i){
+        printf("%d ", pop(&my_stack));
+    }
+    if (0 != pop_size){
+        printf("%d\n", pop(&my_stack));
+    }
+
+    show_stack(&my_stack);
+
+    stack_destroy(&my_stack);
+
+    return 0;
+}
