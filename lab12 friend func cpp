@@ -1,1 +1,137 @@
+/* file main.cpp */
+
+#include "fraction.h"
+#include <iostream>
+using namespace std;
+
+int main() {
+    Fraction num1, num2, ans;
+    char oper;
+    num1.input();
+    cin >> oper;
+    num2.input();
+    
+    switch (oper) {
+      case '+':
+        ans = add(num1, num2); break;
+      case '-':
+        ans = sub(num1, num2); break;
+      case '*':
+        ans = mul(num1, num2); break;
+      case '/':
+        ans = div(num1, num2); break;
+    }
+
+    // display result
+    cout << '(';
+    num1.display();
+    cout << ") " << (oper) << " (";
+    num2.display();
+    cout << ") = ";
+    ans.display();
+    cout << endl;
+
+    return 0;
+}
+
+/* file fraction.h */
+
+#ifndef  FRACTION_H
+#define  FRACTION_H
+
+class Fraction {
+	
+  friend Fraction add(Fraction frac1, Fraction frac2);  
+  friend Fraction sub(Fraction frac1, Fraction frac2);  
+  friend Fraction mul(Fraction frac1, Fraction frac2);  
+  friend Fraction div(Fraction frac1, Fraction frac2); 
+  
+public:
+  void input();
+	void display();
+
+private:
+	void reduce();       
+	int numer, denom;
+};
+
+#endif
+
+
+/* file fraction.cpp */
+
+#include "fraction.h"
+#include <iostream>
+using namespace std;
+
+int gcd(int u, int v) {
+   int t;
+   while (u > 0) {
+      if(u < v) {
+         t = u;
+         u = v;
+         v = t;
+      }
+      u = u-v;
+   }
+   return v;
+}
+
+void Fraction::reduce(){
+  int common;
+  if (numer<0){
+    numer*=(-1);
+    common = gcd(numer,denom);
+    numer = numer/common*(-1);
+    denom = denom/common;
+  } 
+  else {
+    common = gcd(numer,denom);
+    numer = numer/common;
+    denom = denom/common;
+  }
+}
+
+void Fraction::input(){
+  char dummy;
+  cin >> numer >> dummy >> denom;
+  if(denom==0){
+    cout << "dividing by zero"<< endl;
+    exit(1);
+  }
+}
+
+void Fraction::display(){
+  cout << numer << "/" << denom;
+}
+
+Fraction add(Fraction num1, Fraction num2){
+  num1.numer = (num1.numer*num2.denom)+(num2.numer*num1.denom);
+  num1.denom = num1.denom * num2.denom;
+  num1.reduce();
+  return num1;
+}
+
+Fraction sub(Fraction num1, Fraction num2){
+  num1.numer = (num1.numer*num2.denom)-(num2.numer*num1.denom);
+  num1.denom = num1.denom * num2.denom;
+  num1.reduce();
+  return num1;
+
+}
+
+Fraction mul(Fraction num1, Fraction num2){
+  num1.numer = num1.numer*num2.numer;
+  num1.denom = num1.denom*num2.denom;
+  num1.reduce();
+  return num1;
+}
+
+Fraction div(Fraction num1, Fraction num2){
+  num1.numer = num1.numer*num2.denom;
+  num1.denom = num1.denom*num2.numer;
+  num1.reduce();
+  return num1;
+}
+
 
