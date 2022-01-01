@@ -1,1 +1,39 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+/* uint8_t is just a char */
+uint8_t is_palindrome(char s[], int start, int end) {
+  if(end-start==1 || start==end) return 1;
+  else{
+    if(s[start]==s[end]){
+      return is_palindrome(s, start+1, end-1);
+    }
+    else{
+      return 0;
+    }
+  }
+}
+
+
+int main(){
+   char temp_c, str[30];
+   int i=0, len=1;
+   do{ // getting input from user
+     scanf("%c", &temp_c);
+     if(temp_c!=' ' && temp_c!='\n')
+       str[i++] = temp_c;
+   } while(temp_c!=' ' && temp_c!='\n' && i<30);
+   len = i; //current i is string length
+
+   if(is_palindrome(str, 0, len-1)) {
+     printf("a palindrome\n");
+   } else {
+     printf("not a palindrome\n");
+   }
+   
+ 
+ 
+   return 0;
+}
