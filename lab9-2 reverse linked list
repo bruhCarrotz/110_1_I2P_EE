@@ -1,1 +1,101 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+};
+
+typedef struct node node_t;
+
+typedef struct linked_list {
+    node_t *head;
+    node_t *tail;
+} linked_list_t;
+
+void output_list(linked_list_t *ptr_list) {
+  node_t *ptr_node = ptr_list->head;
+  char flag = 1;
+
+    while (ptr_node != NULL){
+      if(flag){
+        printf("%d", ptr_node->data);
+        flag = 0;
+      } 
+      else {
+        printf(" %d", ptr_node->data);
+      }
+      ptr_node = ptr_node->next;
+      }
+}
+
+void add_node(linked_list_t *list_ptr, int data) {
+    node_t *new_node = (node_t *) malloc(sizeof(node_t));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (list_ptr->head == NULL) {
+        list_ptr->head = new_node;
+        list_ptr->tail = new_node;
+    } 
+    else {
+        list_ptr->tail->next = new_node;
+        list_ptr->tail = new_node;
+    }
+}
+
+void initialize(linked_list_t *list_ptr) {
+    list_ptr->head = NULL;
+    list_ptr->tail = NULL;
+}
+
+void reverse_list(linked_list_t *list_ptr) {
+    struct node *prev, *current;
+
+    if(list_ptr->head != NULL){
+        prev = list_ptr->head;
+        current = list_ptr->head->next;
+        list_ptr->head = list_ptr->head->next;
+
+        prev->next = NULL;
+
+        while(list_ptr->head != NULL){
+            list_ptr->head = list_ptr->head->next;
+            current->next = prev;
+
+            prev = current;
+            current = list_ptr->head;
+        }
+        list_ptr->head = prev;
+    }
+}
+
+void free_list(linked_list_t *ptr_list) {
+    struct node *temp = ptr_list->head;
+    while(temp){
+      struct node *temp1 = temp;
+      temp = temp->next;
+      free(temp1);
+    }
+}
+
+int main(){
+    linked_list_t my_list;
+    initialize(&my_list);
+    
+    int data, input_size;
+    /* when you add a node, you add it at the tail */
+    
+    scanf("%d\n", &input_size);
+    for(int i=0; i < input_size; ++i) {
+        scanf("%d", &data);
+        add_node(&my_list, data);
+    }
+    
+    reverse_list(&my_list);
+    output_list(&my_list);
+    free_list(&my_list);
+
+    return 0;  
+}
