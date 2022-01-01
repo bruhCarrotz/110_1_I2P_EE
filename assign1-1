@@ -1,1 +1,439 @@
 
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct{
+  char suit;
+  char face;
+} play_cards;
+
+char order[5];
+int counter[13];
+
+void input(play_cards *hand){
+  for(int i = 0 ; i<5 ; i++){
+    if(i == 4)
+      scanf("%c%c",&hand[i].suit,&hand[i].face);
+    else
+      scanf("%c%c ",&hand[i].suit, &hand[i].face);
+  }
+} 
+void output(play_cards *hand){
+    for(int i = 0 ; i<5 ; i++){
+      if(hand[i].face == 'T'){
+        if(i==4){
+          printf("%c10",hand[i].suit);
+        }
+        else{
+          printf("%c10 ",hand[i].suit);
+        }
+      }
+      else{
+        if(i==4){
+          printf("%c%c",hand[i].suit, hand[i].face);
+        }
+        else{
+          printf("%c%c ",hand[i].suit, hand[i].face);
+        }
+      }
+    }  
+}
+void sort_ascending(play_cards *hand){
+  int temp,temp1;
+	int length = 5;
+
+  for(int j = 0; j<length; j++){
+		if(hand[j].face == '2') hand[j].face = (int)2;
+		if(hand[j].face == '3') hand[j].face = (int)3;
+		if(hand[j].face == '4') hand[j].face = (int)4;
+		if(hand[j].face == '5') hand[j].face = (int)5;
+		if(hand[j].face == '6') hand[j].face = (int)6;
+		if(hand[j].face == '7') hand[j].face = (int)7;
+		if(hand[j].face == '8') hand[j].face = (int)8;
+		if(hand[j].face == '9') hand[j].face = (int)9;
+		if(hand[j].face == 'T') hand[j].face = (int)10;
+		if(hand[j].face == 'J') hand[j].face = (int)11;
+		if(hand[j].face == 'Q') hand[j].face = (int)12;
+		if(hand[j].face == 'K') hand[j].face = (int)13;
+		if(hand[j].face == 'A') hand[j].face = (int)14;
+  }
+
+  for(int i = 0; i<5; i++) {
+    for(int j = i+1; j<5; j++){
+      if(hand[j].face < hand[i].face){
+        temp = hand[j].face;
+        temp1 = hand[j].suit;
+        hand[j].face = hand[i].face;
+        hand[j].suit = hand[i].suit;
+        hand[i].face = temp;
+        hand[i].suit = temp1;
+      }
+    }
+  }
+ 
+  for(int i = 0; i<5; i++){
+    if(hand[i].face == 10) hand[i].face = hand[i].face - 22 + '0' ;//T
+    if(hand[i].face==11) hand[i].face = hand[i].face - 33 + '0';//J
+    if(hand[i].face==12) hand[i].face = hand[i].face -27 + '0';//Q
+    if(hand[i].face==13) hand[i].face = hand[i].face - 34 + '0';//K
+    if(hand[i].face==14) hand[i].face = hand[i].face  +3   + '0';//A
+    else hand[i].face = hand[i].face + '0';
+  } 
+  return;
+}
+void sortbyranks_ascend(play_cards *hand){
+  int temp,temp1;
+	int length = 5;
+  for(int i = 0; i<length; i++){
+    if(hand[i].suit =='C') hand[i].suit = (int)1;
+    if(hand[i].suit =='D') hand[i].suit = (int)2;
+    if(hand[i].suit =='H') hand[i].suit = (int)3;
+    if(hand[i].suit =='S') hand[i].suit = (int)4;
+  }
+
+  for(int i = 0; i<length - 1; i++) {
+    for(int j = 0; j<length - i - 1; j++){
+      if(hand[j].suit > hand[j + 1].suit){
+        temp = hand[j].suit;
+        temp1 = hand[j].face;
+        hand[j].suit = hand[j + 1].suit;
+        hand[j].face = hand[j + 1].face;
+        hand[j + 1].suit = temp;
+        hand[j + 1].face = temp1;
+      }
+    }
+  }
+
+  for(int i = 0; i<length; i++){
+    if(hand[i].suit == 4) hand[i].suit = hand[i].suit + 31 + '0';//S
+    if(hand[i].suit == 3) hand[i].suit = hand[i].suit + 21 + '0';//D
+    if(hand[i].suit == 2) hand[i].suit = hand[i].suit + 18 + '0';//H
+    if(hand[i].suit == 1) hand[i].suit = hand[i].suit + 18 + '0';//C
+  }
+}
+void array_sort(play_cards *hand){
+    for(int i = 0; i < 5-1; i ++){
+        for(int j = 0; j <5-1-i; j++){
+            if(hand[j].face > hand[j+1].face || (hand[j].face  == hand[j+1].face && hand[j].suit > hand[j+1].suit)){
+                char temp1, temp2;
+
+                temp1 = hand[j].face;
+                hand[j].face = hand[j+1].face;
+                hand[j+1].face = temp1;
+
+                temp1 = hand[j].suit;
+                hand[j].suit = hand[j+1].suit;
+                hand[j+1].suit = temp1;
+            }
+        }
+    }
+    return;
+}
+void special_sort(play_cards *hand){
+    for(int i = 0; i < 5; i ++){
+        switch(hand[i].face){
+            case '2': counter[0]++; break;
+            case '3': counter[1]++; break;
+            case '4': counter[2]++; break;
+            case '5': counter[3]++; break;
+            case '6': counter[4]++; break;
+            case '7': counter[5]++; break;
+            case '8': counter[6]++; break;
+            case '9': counter[7]++; break;
+            case 'T': counter[8]++; break;
+            case 'J': counter[9]++; break;
+            case 'Q': counter[10]++; break;
+            case 'K': counter[11]++; break;
+            case 'A': counter[12]++; break;                                                        
+        }
+    }
+
+    int idx = 0;
+    for(int i = 1; i <= 5; i ++){
+        for(int j = 0; j < 13; j++){
+            if(counter[j] == i){
+                switch(j){
+                    case 0: order[idx] = '2'; break;
+                    case 1: order[idx] = '3'; break;
+                    case 2: order[idx] = '4'; break;
+                    case 3: order[idx] = '5'; break;
+                    case 4: order[idx] = '6'; break;
+                    case 5: order[idx] = '7'; break;
+                    case 6: order[idx] = '8'; break;
+                    case 7: order[idx] = '9'; break;
+                    case 8: order[idx] = 'T'; break;
+                    case 9: order[idx] = 'J'; break;
+                    case 10: order[idx] = 'Q'; break;
+                    case 11: order[idx] = 'K'; break;
+                    case 12: order[idx] = 'A'; break;  
+                }
+                idx++;
+            }
+        }
+    }
+    return;
+}
+void sort_groups(play_cards *hand){
+  sort_ascending(&*hand);
+  sortbyranks_ascend(&*hand);
+  array_sort(&*hand);
+  special_sort(&*hand);
+}
+int isHighCard(play_cards *hand){
+  sort_ascending(&*hand);
+  if(hand[0].face != hand[1].face && hand[1].face != hand[2].face && hand[2].face != hand[3].face && hand[3].face != hand[4].face){
+    if(hand[0].suit != hand[1].suit && hand[1].suit != hand[2].suit && hand[2].suit != hand[3].suit && hand[3].suit != hand[4].suit) return 1;
+    else return 0;
+  }
+  else{
+    return 0;
+  }
+}
+int isTwo(play_cards *hand){
+  sort_groups(&*hand);
+  if(hand[0].face == hand[1].face) return 1;
+  else if(hand[1].face == hand[2].face) return 1;
+  else if(hand[3].face == hand[4].face) return 1;
+  else return 0;
+}
+int isTwoPairs(play_cards *hand){
+  sort_groups(&*hand);
+
+  if(hand[0].face == hand[1].face && hand[2].face == hand[3].face) {
+    if(hand[0].suit != hand[1].suit && hand[2].suit != hand[3].suit) return 1;
+  }
+  if(hand[1].face == hand[2].face && hand[3].face == hand[4].face) {
+    if(hand[1].suit != hand[2].suit&& hand[3].suit != hand[4].suit) return 1;
+  }
+  if(hand[0].face == hand[1].face && hand[3].face == hand[4].face) {
+    if(hand[0].suit != hand[1].suit&& hand[3].suit != hand[4].suit) return 1;
+  }
+  return 0;
+}
+int isThree(play_cards *hand){
+  sort_groups(&*hand);
+  if(hand[0].face == hand[1].face && hand[1].face == hand[2].face) 
+    if(hand[3].face == hand[4].face && hand[1].face == hand[2].face)
+      return 1; //1 MEANS FULL HOUSE
+    else return 2; //2 MEANS THREE
+  
+  else if(hand[1].face == hand[2].face && hand[2].face == hand[3].face) 
+    if(hand[0].face == hand[4].face)
+      return 1; //1 MEANS FULL HOUSE
+    else return 2; //2 MEANS THREE
+
+  else if(hand[2].face == hand[3].face && hand[3].face == hand[4].face) 
+    if(hand[0].face == hand[1].face)
+      return 1; //1 MEANS FULL HOUSE
+    else return 2; //2 MEANS THREE
+  else return 0; 
+}
+int isFlush(play_cards *hand){
+  sort_ascending(&*hand);
+  if(hand[1].suit==hand[2].suit && hand[1].suit==hand[3].suit && hand[1].suit==hand[4].suit) return 1;  
+  else return 0; 
+}
+int isStraight(play_cards *hand){
+  sort_ascending(&*hand);
+  if(hand[4].face == 'A'){
+    if(hand[3].face =='K' && hand[2].face =='Q' && hand[1].face =='J' && hand[0].face == 'T')return 1;
+  }
+  if(hand[4].face == 'K'){
+    if(hand[3].face =='Q' && hand[2].face =='J' && hand[1].face =='T' && hand[0].face == '9')return 1;
+  }
+  if(hand[4].face == 'Q'){
+    if(hand[3].face =='J' && hand[2].face =='T' && hand[1].face =='9' && hand[0].face == '8')return 1;
+  }
+  if(hand[4].face == 'J'){
+    if(hand[3].face =='T' && hand[2].face =='9' && hand[1].face =='8' && hand[0].face == '7')return 1;
+  }
+  if(hand[4].face == 'T'){
+    if(hand[3].face =='9' && hand[2].face =='8' && hand[1].face =='7' && hand[0].face == '6')return 1;
+  }
+  else {
+    int j = 3, flag = 1, k = 1;
+    while(j>=0 && flag == 1){
+      if((int)hand[4].face - 48 == (int)hand[j].face - 48 + k){
+        j--; k++;
+      }
+      else return 0;
+    }
+  }
+
+  return 1;
+}
+int isStraightF(play_cards *hand){
+  if(isStraight(&*hand) && isFlush(&*hand)) return 1;
+  else return 0;
+}
+int isFourkind(play_cards *hand){
+  sort_groups(&*hand);
+  if(hand[0].face == hand[1].face && hand[1].face == hand[2].face && hand[2].face == hand[3].face) return 1;
+  if(hand[1].face == hand[2].face && hand[2].face == hand[3].face && hand[3].face == hand[4].face) return 1;
+  else return 0;
+}
+
+int main(){
+  play_cards hand[5];
+
+  //input
+  input(&*hand);
+
+  //STRAIGHT FLUSH WORKS  
+  if(isStraightF(&*hand)){
+    sort_ascending(&*hand);
+    printf("%c%c-straight flush\n", hand[4].suit, hand[4].face);
+    output(&*hand);
+    printf("\n");
+    return 0;
+  }
+  //FOUR OF A KIND WORKS
+  if(isFourkind(&*hand)){ 
+    printf("%c-four of a kind\n",hand[2].face);
+    int temp,temp1;
+    temp = hand[4].suit;
+    temp1 = hand[4].face;
+    for(int i = 4; i>0; i--){
+      hand[i].suit = hand[i-1].suit;
+      hand[i].face = hand[i-1].face;
+    }
+    hand[0].suit = temp;
+    hand[0].face = temp1;
+    output(&*hand);
+		printf("\n");
+		return 0;
+  }
+	//FULL HOUSE WORKS
+  if(isThree(&*hand)==1){ //THREE = 1 MEANS FULLHOUSE
+    sort_groups(&*hand);
+    printf("%c-full house\n", hand[1].face);
+    int count = 0;
+    for(int i = 0; i < 5; i ++){
+        for(int j = 0; j < 5; j++){
+            if(hand[j].face == order[i] && count != 5){
+              printf("%c%c", hand[j].suit, hand[j].face);
+              if (i==1 && j==2){
+                break;
+              }
+              else{
+                printf(" ");
+              }
+            }
+        }
+    }    
+    printf("\n");
+    return 0;
+  }
+  //FLUSH WORKS
+  if(!isStraight(&*hand) && isFlush(&*hand) && !isStraightF(&*hand)){ 
+    sort_ascending(&*hand);
+    printf("%c%c-flush\n",hand[4].suit, hand[4].face);
+    for(int i = 0; i<5; i++){
+      if(i==4){
+        printf("%c%c",hand[i].suit,hand[i].face);
+      }
+      else{
+      printf("%c%c ",hand[i].suit,hand[i].face);
+      }
+    }
+    printf("\n");
+    return 0;
+  }
+  //STRAIGHT WORKS
+  if(isStraight(&*hand) && !isFlush(&*hand) && !isStraightF(&*hand) && !isFourkind(&*hand)){ 
+    sort_ascending(&*hand);
+    printf("%c%c-straight\n",hand[4].suit, hand[4].face);
+    for(int i = 0; i<5; i++){
+      if(hand[i].face == 'T'){
+        if(i==4){
+          printf("%c10",hand[i].suit);
+        }
+        else{
+          printf("%c10 ",hand[i].suit);
+        }
+      }
+      else{
+        if(i==4){
+          printf("%c%c",hand[i].suit,hand[i].face);
+        }
+        else{
+          printf("%c%c ",hand[i].suit,hand[i].face);
+        }
+      }
+    }
+    printf("\n");
+    return 0;
+  }
+  //THREE OF A KIND WORKS
+  if(isThree(&*hand)==2){ //THREE = 2 MEANS FULLHOUSE
+    sort_groups(&*hand);
+    printf("%c-three of a kind\n", hand[1].face);
+    int count = 0;
+    for(int i = 0; i < 5; i ++){
+        for(int j = 0; j < 5; j++){
+            if(hand[j].face == order[i] && count != 5){
+              printf("%c%c", hand[j].suit, hand[j].face);
+              if (i==2 && j==3){
+                break;
+              }
+              else{
+                printf(" ");
+              }
+            }
+        }
+    }  
+    printf("\n");
+    return 0;
+  }
+  //TWO PAIRS WORKS
+  if(isTwoPairs(&*hand)){ 
+    sort_groups(&*hand);
+    printf("%c%c-two pairs\n", hand[3].suit, hand[3].face);
+    int count = 0;
+    for(int i = 0; i < 5; i ++){
+        for(int j = 0; j < 5; j++){
+            if(hand[j].face == order[i] && count != 5){
+              printf("%c%c", hand[j].suit, hand[j].face);
+              if (i==2 && j==3){
+                break;
+              }
+              else{
+                printf(" ");
+              }
+            }
+        }
+    }    
+    printf("\n");
+    return 0;
+  } 
+  //PAIR WORKS
+  if(isTwo(&*hand)){ 
+    sort_groups(&*hand);
+    printf("%c%c-pair\n", hand[1].suit, hand[1].face);
+    int count = 0;
+    for(int i = 0; i < 5; i ++){
+        for(int j = 0; j < 5; j++){
+            if(hand[j].face == order[i] && count != 5){
+              printf("%c%c", hand[j].suit, hand[j].face);
+              if (i==3 && j==1){
+                break;
+              }
+              else{
+                printf(" ");
+              }
+            }
+        }
+    }    
+    printf("\n");
+    return 0;
+  } 
+  //HIGH CARD WORKS
+  if(isHighCard(&*hand)==1){ 
+    sort_ascending(&*hand);
+    printf("%c%c-high card\n", hand[4].suit, hand[4].face);
+    output(&*hand);
+    printf("\n");
+    return 0;
+  } 
+  return 0;
+}
