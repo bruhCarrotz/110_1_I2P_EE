@@ -1,1 +1,83 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+//printing and reverse a linked list
+
+struct node{
+    int data;
+    struct node *next;
+};
+typedef struct node node_t;
+
+typedef struct linked_list {
+    node_t *head;
+    node_t *tail;
+} linked_list_t;
+
+void initialize(linked_list_t *list_ptr) {
+    list_ptr->head = NULL;
+    list_ptr->tail = NULL;
+}
+
+void output(node_t *head) {
+  if(head==NULL) 
+    return;
+  printf("%d ", head->data);
+  output(head->next);
+}
+
+void add_node(linked_list_t *list_ptr, int data) {
+  node_t *new_node = (node_t *) malloc(sizeof(node_t));
+  new_node->data = data;
+  new_node->next = NULL;
+
+  if (list_ptr->head == NULL) {
+    list_ptr->head = new_node;
+    list_ptr->tail = new_node;
+  } 
+  else {
+    list_ptr->tail->next = new_node;
+    list_ptr->tail = new_node;
+  }
+}
+
+void free_list(linked_list_t *ptr_list) {
+  struct node *temp = ptr_list->head;
+  while(temp){
+    struct node *temp1 = temp;
+    temp = temp->next;
+    free(temp1);
+  }
+}
+
+void reverse_output(node_t *head) {
+  if(head==NULL) 
+    return;
+  reverse_output(head->next);
+  printf("%d ", head->data);
+}
+
+int main(){
+    linked_list_t my_list;
+    initialize(&my_list);
+    node_t *middle_ptr;
+    
+    int data, input_size;
+    struct node* head;
+
+    scanf("%d\n", &input_size);
+    for(int i=0; i < input_size; ++i) {
+        scanf("%d", &data);
+        add_node(&my_list, data);
+    }
+    
+    output(my_list.head);
+    printf("\n");
+    reverse_output(my_list.head);
+
+    free_list(&my_list);
+
+    return 0;
+}
+
