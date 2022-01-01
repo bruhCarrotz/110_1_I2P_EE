@@ -1,1 +1,152 @@
+/* file main.cpp */
+#include <iostream>
+#include "student.h"
+using namespace std;
 
+int main() {
+  student joe;
+  joe.input_student();
+  joe.output_student();
+  return 0;
+} 
+
+/* file student.h */
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+#ifndef STUDENT_H
+#define STUDENT_H
+
+
+class DayOfYear{
+public:
+  DayOfYear(int, int, int);
+  DayOfYear();
+  DayOfYear(DayOfYear&);
+  void input();
+  void output(); 
+  
+private:
+  bool valid(int y, int m, int d); 
+  int year;
+  int month;
+  int day;
+};
+
+
+class person {
+public:
+    person();
+    void input();
+    void output();
+    
+protected:  
+    string name;
+    string ID_number;
+    DayOfYear date_of_birth;
+};
+
+
+class student : public person {
+public:
+    student();
+    void output_student();
+    void input_student();
+
+private:
+    string student_ID;
+    string major;
+};
+
+
+#endif
+
+/* file student.cpp */
+
+#include <iostream>
+#include "student.h"
+using namespace std;
+
+person::person(){
+  string name = "";
+  string ID_number = "";
+}
+
+DayOfYear::DayOfYear(){
+  string date_of_birth = "";
+}
+
+student::student(){
+  string student_ID = "";
+  string major = "";
+}
+
+void DayOfYear::input(){
+  int y, m, d;
+  char dum = '/';
+
+  cin >> y >> dum >> m >> dum >> d;
+  year = y;
+  month = m; 
+  day = d; 
+
+  if (!valid(y,m,d)){
+    cout << "Invalid input" << endl;
+    exit(1);
+  }
+}
+
+void DayOfYear::output(){
+  char dummy = '/';
+  int y,m,d;
+  cout << year << dummy << month << dummy << day << endl;
+}
+
+bool DayOfYear::valid(int y, int m, int d) {
+  if (m<1 || m>12 || d<1) return false;
+  
+  switch(m) {
+          case 1: case 3: case 5: case 7:
+          case 8: case 10: case 12:
+            if(d<=31)
+              return true; 
+              break;
+          case 4: case 6: case 9: case 11:
+            if(d<=30)
+              return true; 
+              break;
+          case 2:
+            if(d<=29)
+              return true; 
+              break;
+  }
+  return false;
+}
+
+void person::input(){
+  getline(cin, name);
+  getline(cin, ID_number);
+  date_of_birth.input();
+}
+
+void person::output(){
+  cout << "Name: " << name << endl;
+  cout << "ID: " << ID_number << endl;
+  cout << "DoB: ";
+  date_of_birth.output();
+}
+
+void student:: input_student(){
+  input();
+  cin.ignore(1,'\n');
+  getline(cin, student_ID);
+  getline(cin, major);
+}
+
+void student:: output_student(){
+  output();
+  cout << "Stu ID: " << student_ID << endl;
+  cout << "Major: " << major << endl;
+}
