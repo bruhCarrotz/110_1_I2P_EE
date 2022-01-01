@@ -1,1 +1,134 @@
+/* file main.cpp */
+
+#include "fraction.h"
+#include <iostream>
+using namespace std;
+int main() {
+    Fraction num1, num2, ans;
+    char oper;
+    num1.input();
+    cin >> oper;
+    num2.input();
+    ans = num1;
+
+    switch (oper) {
+      case '+':
+        ans.add(num2); break;
+      case '-':
+        ans.sub(num2); break;
+      case '*':
+        ans.mul(num2); break;
+      case '/':
+        ans.div(num2); break;
+    }
+
+    // display result
+    cout << '(';
+    num1.display();
+    cout << ") " << (oper) << " (";
+    num2.display();
+    cout << ") = ";
+    ans.display();
+    cout << endl;
+
+    return 0;
+}
+
+
+/* file fraction.cpp */
+
+#include "fraction.h"
+#include <iostream>
+using namespace std;
+
+int gcd(int u, int v) {
+   int t;
+   while (u > 0) {
+      if(u < v) {
+         t = u;
+         u = v;
+         v = t;
+      }
+      u = u-v;
+   }
+   return v;
+}
+
+void Fraction::reduce(){
+  int common;
+  if (numer<0){
+    numer*=(-1);
+    common = gcd(numer,denom);
+    numer = numer/common*(-1);
+    denom = denom/common;
+  } 
+  else {
+    common = gcd(numer,denom);
+    numer = numer/common;
+    denom = denom/common;
+  }
+}
+
+void Fraction::input(){
+  char dummy;
+  cin >> numer >> dummy >> denom;
+  if(denom==0){
+    cout << "dividing by zero"<<endl;
+    exit(1);
+  }
+}
+
+void Fraction::display(){
+  cout << numer << "/" << denom;
+}
+
+void Fraction::add(Fraction num2){
+  numer = (numer*num2.denom)+(num2.numer*denom);
+  denom = denom * num2.denom;
+  reduce();
+}
+
+void Fraction::sub(Fraction num2){
+  numer = (numer*num2.denom)-(num2.numer*denom);
+  denom = denom * num2.denom;
+  reduce();
+}
+
+void Fraction::mul(Fraction num2){
+  numer = numer*num2.numer;
+  denom = denom*num2.denom;
+  reduce();
+}
+void Fraction::div(Fraction num2){
+  numer = numer*num2.denom;
+  denom = denom*num2.numer;
+  reduce();
+}
+
+/* file fraction.h */
+
+#ifndef  FRACTION_H
+#define  FRACTION_H
+
+class Fraction {
+public:
+  void input();
+	void display();         // display fraction
+	void add(Fraction frac2);  
+	void sub(Fraction frac2);  
+	void mul(Fraction frac2);  
+	void div(Fraction frac2);  
+
+private:
+	void reduce();       
+  /* reduce the fraction to its simplest form */
+	int numer, denom;
+};
+
+#endif
+
+
+
+
+
 
