@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+//defining the stack
+struct stack{
+  int *stack;
+  int top;
+  int max;
+};
+
+//initialize the stack
+void init(struct stack *temp, int size){
+  temp->stack = (int*)malloc(sizeof(int)*size);
+  temp->max = size;
+}
+
+//checking if it's valid to place the queen
+int is_safe(int row, int col, int *array, int size){
+  int i,j;
+
+  for(i=0 ; i<row ; i++){ //check columns
+    if(*(array+size*i+col) == 1)
+          return 0;
+  }
+  
+  for(i=row, j=col; i>=0 && j<size; i--, j++){ //check left lower diagonal
+      if(*(array+size*i+j) == 1)
+          return 0;
+  }
+  
+  for(i=row, j=col; i>=0 && j>=0; i--, j--){ //check left upper diagonal
+      if(*(array+size*i+j) == 1)
+          return 0;
+  }
+  //no need to check right side
+  return 1;
+}
+
+int solver(struct stack *temp, int *array, int size, int row){
+  static int solution = 0;
+
+  if(row == size){ //counting solutions when last queen is placed
+      solution++;
+      for(int i=0 ; i<size ; i++){ //printing the col numbers
+          printf("%d ", temp->stack[i]);
+      }
+      printf("\n");
+      return solution;
+  }
+  //placing queens in rows one by one
+  for(int col=0 ; col<size ; col++){
+      if(is_safe(row, col, array, size)){
+          *(array+size*row+col) = 1; //placing the queen to this array
+          temp->stack[row] = col+1; //placing the rest of the queens
+          solution = solver(temp, array, size, row+1);
+          *(array+size*row+col) = 0; //backtrack
+      }
+  }
+  return solution;
+}
+
+int k_queens(struct stack *temp){
+  int n = temp->max;
+  int *arr = (int*)malloc(sizeof(int)*n*n); //dynamic array for solutions
+
+  for(int i=0 ; i<n ; i++){ //making an array for the solutions
+      for(int j=0 ; j<n ; j++){
+          *(arr+i*n+j) = 0;
+      }
+  }
+  //calling recursive function and store solutions in arr
+  return solver(temp, arr, n, 0);
+}
+
+//clearing stack after program is done
+void destroy(struct stack *temp){
+  free(temp->stack);
+}
+
+int main(){
+  int k, sol;
+  struct stack qstack;
+
+  scanf("%d", &k);
+  init(&qstack, k);
+
+  sol = k_queens(&qstack);
+
+  if(sol == 0){ //exception for k=2 and k=3
+    printf("There's no solution for the %d-Queen problem.\n", k);
+  }
+  else{ //for k other than 2 and 3
+    printf("%d solution(s) for the %d-Queen problem.\n", sol, k);
+  }
+
+  destroy(&qstack);
+
+  return 0;
+}
